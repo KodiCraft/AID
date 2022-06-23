@@ -6,6 +6,7 @@ import inquirer from "inquirer"
 import chalk from "chalk"
 
 var CURRENT_ID = 0
+var STI_FOLDER = ""
 function nextID() {
     return CURRENT_ID++
 }
@@ -78,11 +79,15 @@ async function getSTIFolder() {
     //  - In any other folder, in which we'll ask for the Party Pack 4 folder
 
     // Check for which state we are in
+    if (!STI_FOLDER) {
     if (existsSync(`${process.cwd()}/../SurviveTheInternet`)) {
+        STI_FOLDER = `${process.cwd()}`
         return `${process.cwd()}`
     } else if (existsSync(`${process.cwd()}/../games`)) {
+        STI_FOLDER = `${process.cwd()}/SurviveTheInternet`
         return `${process.cwd()}/SurviveTheInternet`
     } else if (existsSync(`${process.cwd()}/games`)) {
+        STI_FOLDER = `${process.cwd()}/games/SurviveTheInternet`
         return `${process.cwd()}/games/SurviveTheInternet`
     } else {
         let userInput = await inquirer.prompt(
@@ -100,10 +105,13 @@ async function getSTIFolder() {
         
         // Check if this is the right folder by seeing if it contains the 'content' folder
         if (existsSync(`${userInput.sti_folder}/content`)) {
+            STI_FOLDER = userInput.sti_folder
             return userInput.sti_folder
         }
         // If not, write an error message and exit
         console.error(`${chalk.bgRed(userInput.sti_folder)} does not contain the 'content' folder, are you sure this is the right folder?`)
+    }} else {
+        return STI_FOLDER
     }
 
 }
