@@ -8,6 +8,7 @@ Dependencies:
    - [npm](https://www.npmjs.com/)
 
    - Survive The Internet (Jackbox Party Pack 4)
+
 Simply download or clone the repository and run `npm start` in it
 
 # Usage
